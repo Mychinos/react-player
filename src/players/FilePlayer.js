@@ -4,6 +4,7 @@ import { getSDK, isMediaStream } from '../utils'
 import createSinglePlayer from '../singlePlayer'
 
 const IOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+const IPADOS = typeof navigator !== 'undefined' && navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
 const AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i
 const VIDEO_EXTENSIONS = /\.(mp4|og[gv]|webm|mov|m4v)($|\?)/i
 const HLS_EXTENSIONS = /\.(m3u8)($|\?)/i
@@ -149,7 +150,7 @@ export class FilePlayer extends Component {
   }
 
   shouldUseHLS (url) {
-    return (HLS_EXTENSIONS.test(url) && !IOS) || this.props.config.file.forceHLS
+    return (HLS_EXTENSIONS.test(url) && !IOS && !IPADOS) || this.props.config.file.forceHLS
   }
 
   shouldUseDASH (url) {
